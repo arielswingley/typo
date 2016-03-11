@@ -17,6 +17,22 @@ module NavigationHelpers
       '/'
     when /^the new article page$/
       '/admin/content/new'
+    when /^the admin page$/
+      '/admin/'
+    when /^the categories page$/
+      '/admin/categories/new'
+    when /^the edit "(.*?)" page$/ then
+      name = $1
+      rx = /^\[\#\<Category id: ([0-9]+)/
+      Category.where("name = ?", name).inspect =~ rx
+      category_id = $1
+      '/admin/categories/edit/' + category_id
+    when /^the destroy "(.*?)" page$/ then
+      name = $1
+      rx = /^\[\#\<Category id: ([0-9]+)/
+      Category.where("name = ?", name).inspect =~ rx
+      category_id = $1
+      '/admin/categories/destroy/' + category_id
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

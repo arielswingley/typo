@@ -1,11 +1,10 @@
 class Admin::CategoriesController < Admin::BaseController
   cache_sweeper :blog_sweeper
-
+  
   def index; redirect_to :action => 'new' ; end
   def edit; new_or_edit;  end
 
   def new
-    puts params
     respond_to do |format|
       format.html { new_or_edit }
       format.js { 
@@ -30,7 +29,7 @@ class Admin::CategoriesController < Admin::BaseController
       @category = Category.find(params[:id])
       @category.attributes = params[:category]
     else
-      @category = Category.new(name: 'default')
+      @category = Category.new(params[:category])
     end
     if request.post?
       respond_to do |format|
@@ -54,7 +53,6 @@ class Admin::CategoriesController < Admin::BaseController
       end
     rescue ActiveRecord::RecordInvalid => invalid
         flash[:error] = _('Category could not be saved.')
-        puts 'ActiveRecord error:'
         puts invalid.record.errors
     end
     redirect_to :action => 'new'

@@ -6,10 +6,11 @@ class Category < ActiveRecord::Base
   has_many :articles,
     :through => :categorizations,
     :order   => "published_at DESC, created_at DESC"
-
-
+  
   default_scope :order => 'name ASC'
-
+  
+  #attr_accessible :position
+  
   module Finders
     def find_all_with_article_counters(maxcount=nil)
       self.find_by_sql([%{
@@ -58,6 +59,7 @@ class Category < ActiveRecord::Base
     name
   end
 
+
   def permalink_url(anchor=nil, only_path=false)
     blog = Blog.default # remove me...
 
@@ -72,6 +74,7 @@ class Category < ActiveRecord::Base
   def to_param
     permalink
   end
+  
 
   protected
 

@@ -56,8 +56,8 @@ And /^I am logged into the admin panel$/ do
 end
 
 # Single-line step scoper
-When /^(.*) within (.*[^:])$/ do |step, parent|
-  with_scope(parent) { When step }
+When /^(.*) within (.*[^:])$/ do |st, parent|
+  with_scope(parent) { step st }
 end
 
 # Multi-line step scoper
