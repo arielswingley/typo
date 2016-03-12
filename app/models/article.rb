@@ -72,11 +72,12 @@ class Article < Content
   end
   
   def merge_with_article(instance_id)
-    puts "article/merge_with_article"
     article = Article.find_by_id(instance_id)
     self.body += article.body
     article.comments.each do |comment|
-      self.add_comment(comment)
+      hash = {}
+      comment.instance_variables.each {|var| hash[var.to_s.delete("@")] = comment.instance_variable_get(var) }
+      add_comment(hash["attributes"])
     end
     self.save!
     article.destroy
