@@ -1,12 +1,12 @@
 Rails.application.routes.draw do
   # Load plugin routes first. A little bit ugly, but I didn't find any better way to do it
   # We consider that only typo_* plugins are concerned
+  
   Dir.glob(File.join("vendor", "plugins", "typo_*")).each do |dir|
     if File.exists?(File.join(dir, "config", "routes.rb"))
       require File.join(dir, "config", "routes.rb")
     end
   end
-
   # for CK Editor
   match 'fm/filemanager(/:action(/:id))', :to => 'Fm::Filemanager', :format => false
   match 'ckeditor/command', :to => 'ckeditor#command', :format => false
@@ -106,10 +106,12 @@ Rails.application.routes.draw do
   end
 
   # Admin/XController
+  match "/admin/content/merge/:id", :to => "admin/content#merge_with", :as => 'merge_with'
   %w{advanced cache categories comments content profiles feedback general pages
      resources sidebar textfilters themes trackbacks users settings tags redirects seo post_types }.each do |i|
     match "/admin/#{i}", :to => "admin/#{i}#index", :format => false
     match "/admin/#{i}(/:action(/:id))", :to => "admin/#{i}", :action => nil, :id => nil, :format => false
+    
   end
 
   # default

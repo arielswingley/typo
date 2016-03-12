@@ -70,7 +70,19 @@ class Article < Content
       self.settings = {}
     end
   end
-
+  
+  def merge_with_article(instance_id)
+    puts "article/merge_with_article"
+    article = Article.find_by_id(instance_id)
+    self.body += article.body
+    article.comments.each do |comment|
+      self.add_comment(comment)
+    end
+    self.save!
+    article.destroy
+  end
+  
+  
   def set_permalink
     return if self.state == 'draft'
     self.permalink = self.title.to_permalink if self.permalink.nil? or self.permalink.empty?

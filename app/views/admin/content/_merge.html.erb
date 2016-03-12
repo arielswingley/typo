@@ -1,0 +1,15 @@
+<% if @current_user.admin? && @article.id %>
+    <div id='merge_form' class=''>
+    <%=form_tag merge_with_path(@article.id) do %>
+        <%=error_messages_for 'merge' %>
+        <h4><%= _("Merge Articles") %></h4>
+        <div class='clearfix'>
+            <label for="article_id">
+                    <%=_ ( "Article ID") %>
+            </label>
+            <input type='text' id='article_id' name="merge_with"></input>
+        </div>
+        <%= submit_tag _("Merge") %>
+    <% end %>
+    </div>
+<% end %>

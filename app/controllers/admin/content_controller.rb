@@ -5,6 +5,14 @@ class Admin::ContentController < Admin::BaseController
   layout "administration", :except => [:show, :autosave]
 
   cache_sweeper :blog_sweeper
+  
+  def merge_with
+    puts "merge"
+    puts params
+    @article1 = Article.where("id = ?", params[:id]).first
+    @article1.merge_with_article(params[:merge_with])
+    redirect_to "/admin/content/edit/#{params[:id]}"
+  end
 
   def auto_complete_for_article_keywords
     @items = Tag.find_with_char params[:article][:keywords].strip
@@ -12,6 +20,8 @@ class Admin::ContentController < Admin::BaseController
   end
 
   def index
+    puts "index"
+    puts params
     @search = params[:search] ? params[:search] : {}
     
     @articles = Article.search_with_pagination(@search, {:page => params[:page], :per_page => this_blog.admin_display_elements})
@@ -140,6 +150,8 @@ class Admin::ContentController < Admin::BaseController
   def real_action_for(action); { 'add' => :<<, 'remove' => :delete}[action]; end
 
   def new_or_edit
+    puts "new_or_edit"
+    puts params
     id = params[:id]
     id = params[:article][:id] if params[:article] && params[:article][:id]
     @article = Article.get_or_build_article(id)
@@ -240,4 +252,6 @@ class Admin::ContentController < Admin::BaseController
   def setup_resources
     @resources = Resource.by_created_at
   end
+  
+  
 end
